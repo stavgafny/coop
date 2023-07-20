@@ -9,8 +9,6 @@
 
 # CooP - Protest Map 🇮🇱
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-
 <br />
 <div align="center">
 <a href="https://github.com/stavgafny/coop">
@@ -31,15 +29,15 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#Overview">About The Project</a>
+      <a href="#overview">About The Project</a>
     </li>
-    <li><a href="#Getting-started">Getting started</a></li>
+    <li><a href="#getting-started">Getting started</a></li>
     <li>
-      <a href="#Key-Features">Key Features</a>
+      <a href="#key-Features">Key Features</a>
     </li>
-    <li><a href="#License">License</a></li>
-    <li><a href="#Contact">Contact</a></li>
-     <li><a href="#Disclaimer">Disclaimer</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+     <li><a href="#disclaimer">Disclaimer</a></li>
   </ol>
 </details>
 
@@ -63,7 +61,7 @@ CooP is an open-source application that empowers users with the ability to acces
 
 - **Protest Search**: Users can easily search for specific protests or events, making it convenient to find and join the nearest ones.
 
-## License
+## License ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 CooP is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute it in accordance with the terms of the license.
 
