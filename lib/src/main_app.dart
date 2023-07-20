@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './constants/theme/app_theme.dart';
 import './features/home/home_view.dart';
 
 class MainApp extends StatelessWidget {
@@ -6,8 +7,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: HomeView(),
+    return MaterialApp(
+      title: 'Coop',
+      theme: darkTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
+      home: const Scaffold(
+        body: HomeView(),
+      ),
     );
   }
 }
