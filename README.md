@@ -16,7 +16,7 @@
 <a href="https://github.com/stavgafny/coop">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/images/RMlogo.png">
-  <img alt="Logo" src="./assets/images/RMlogo.png" width="500" height="160">
+  <img alt="Logo" src="./assets/images/RMlogo.png" width="160" height="160">
 </picture>
 </a>
   <p align="center">
