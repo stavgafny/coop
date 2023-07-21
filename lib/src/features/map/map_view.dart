@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import './services/map_service.dart';
+import './services/location_service.dart';
 
 class MapView extends StatefulWidget {
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(31.53156914572053, 34.86090457898239),
-    zoom: 14.4746,
-  );
-
   const MapView({super.key});
 
   @override
@@ -15,36 +12,58 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  String? _darkMapStyle;
+  Position? _position;
+  bool _gotLocation = false;
 
   @override
   void initState() {
     super.initState();
-    _loadMapStyles();
-  }
-
-  Future _loadMapStyles() async {
-    _darkMapStyle =
-        await rootBundle.loadString('assets/json/map_styles/night.json');
+    MapService.init();
+    LocationService.getLastLocation().then((position) {
+      _position = position;
+      _gotLocation = true;
+      setState(() {});
+      Geolocator.getServiceStatusStream().listen((event) async {
+        if (event == ServiceStatus.enabled) {
+          final position = await Geolocator.getCurrentPosition();
+          MapService.goto(
+            CameraPosition(
+                target: LatLng(position.latitude, position.longitude),
+                zoom: 12.0),
+          );
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_gotLocation) return const SizedBox.shrink();
+
+    CameraPosition cameraPosition = MapService.defaultCameraPosition;
+    if (_position != null) {
+      final latitude = _position!.latitude;
+      final longitude = _position!.longitude;
+      cameraPosition = CameraPosition(
+        target: LatLng(latitude, longitude),
+        zoom: 12.0,
+      );
+    }
+
     return GoogleMap(
       compassEnabled: false,
       zoomControlsEnabled: false,
-      myLocationButtonEnabled: true,
+      myLocationButtonEnabled: false,
+      myLocationEnabled: true,
       mapType: MapType.normal,
-      initialCameraPosition: MapView._kGooglePlex,
-      onMapCreated: (controller) {
-        controller.setMapStyle(_darkMapStyle);
-      },
-      markers: <Marker>{
-        const Marker(
-          markerId: MarkerId("id"),
-          position: LatLng(31.53156914572053, 34.86090457898239),
-        ),
-      },
+      initialCameraPosition: cameraPosition,
+      onMapCreated: MapService.onMapCreated,
     );
+  }
+
+  @override
+  void dispose() {
+    MapService.disposeController();
+    super.dispose();
   }
 }

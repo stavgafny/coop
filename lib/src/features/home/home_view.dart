@@ -27,12 +27,30 @@ class HomeView extends StatelessWidget {
                       topRight: Radius.circular(25.0),
                     ),
                   ),
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: 25,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(title: Text('Item $index'));
-                    },
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: 80.0,
+                            height: 8.0,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF404040),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        controller: scrollController,
+                        itemCount: 25,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(title: Text('Item $index'));
+                        },
+                      ),
+                    ],
                   ),
                 );
               },
