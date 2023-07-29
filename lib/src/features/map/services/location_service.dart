@@ -35,7 +35,7 @@ class LocationService {
   static Future<Position?> getLastLocation() async {
     try {
       await _handleServicePermissions();
-      return await Geolocator.getCurrentPosition();
+      return await Geolocator.getLastKnownPosition();
     } catch (e) {
       return null;
     }
