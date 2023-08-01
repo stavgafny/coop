@@ -50,14 +50,22 @@ class _MapViewState extends State<MapView> {
       );
     }
 
-    return GoogleMap(
-      compassEnabled: false,
-      zoomControlsEnabled: false,
-      myLocationButtonEnabled: false,
-      myLocationEnabled: true,
-      mapType: MapType.normal,
-      initialCameraPosition: cameraPosition,
-      onMapCreated: MapService.onMapCreated,
+    final mapSize = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: SizedBox(
+        width: mapSize.width,
+        height: mapSize.height,
+        child: GoogleMap(
+          compassEnabled: false,
+          zoomControlsEnabled: false,
+          myLocationButtonEnabled: false,
+          myLocationEnabled: true,
+          mapType: MapType.normal,
+          initialCameraPosition: cameraPosition,
+          onMapCreated: MapService.onMapCreated,
+        ),
+      ),
     );
   }
 

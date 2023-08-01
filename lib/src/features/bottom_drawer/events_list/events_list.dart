@@ -10,7 +10,8 @@ class EventsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
-      itemCount: 20,
+      physics: const ClampingScrollPhysics(),
+      itemCount: 100,
       itemBuilder: (BuildContext context, int index) {
         return const EventTile();
       },
