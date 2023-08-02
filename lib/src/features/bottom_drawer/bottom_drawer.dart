@@ -73,17 +73,21 @@ class _BottomDrawerState extends State<BottomDrawer> {
                     topRight: Radius.circular(25.0),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const _Notch(),
-                    SearchBox(
-                      onTap: _focusAndSnapSearchBoxToTop,
-                      focusNode: _searchBoxFocusNode,
-                    ),
-                    Expanded(
-                      child: EventsList(scrollController: scrollController),
-                    )
-                  ],
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: Column(
+                    children: [
+                      const _Notch(),
+                      SearchBox(
+                        onTap: _focusAndSnapSearchBoxToTop,
+                        focusNode: _searchBoxFocusNode,
+                      ),
+                      Expanded(
+                        child: EventsList(scrollController: scrollController),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
