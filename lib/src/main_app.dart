@@ -12,9 +12,7 @@ class MainApp extends StatelessWidget {
       theme: darkTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      home: const Scaffold(
-        body: HomeView(),
-      ),
+      home: const HomeView(),
     );
   }
 }
