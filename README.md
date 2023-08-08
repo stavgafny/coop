@@ -33,7 +33,7 @@
     </li>
     <li><a href="#getting-started">Getting started</a></li>
     <li>
-      <a href="#key-Features">Key Features</a>
+      <a href="#key-features">Key Features</a>
     </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
