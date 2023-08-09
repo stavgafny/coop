@@ -14,7 +14,7 @@ class ProtestEventsProvider {
 
   static List<ProtestEvent> _asProtestEvents(List<dynamic> protestEventsData) {
     return protestEventsData
-        .map((protestEventData) => ProtestEvent.fromApi(protestEventData))
+        .map((protestEventData) => ProtestEvent.parseFromApi(protestEventData))
         .toList();
   }
 

@@ -4,21 +4,24 @@ import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProtestEvent {
-  static ProtestEvent fromApi(Map<String, dynamic> apiEvent) {
+  static ProtestEvent parseFromApi(Map<String, dynamic> apiEvent) {
     ProtestEvent protestEvent = ProtestEvent.pure();
     try {
       protestEvent = protestEvent.copyWith(
-        name: apiEvent['eventName'],
-        type: apiEvent['eventType'],
-        description: apiEvent['eventDescription'],
-        date: DateTime.now(), //! apiEvent['eventStartDate'],
+        name: apiEvent['eventName'] as String,
+        type: apiEvent['eventType'] as String,
+        description: apiEvent['eventDescription'] as String,
+        date: _parseDateFromApi(
+          dateString: apiEvent['eventDateString'],
+          timeString: apiEvent['eventStartTime'],
+        ),
         location: LatLng.fromJson([
           double.parse(apiEvent['latitude'].toString()),
           double.parse(apiEvent['longitude'].toString())
         ]),
-        address: apiEvent['eventAddress'],
-        city: apiEvent['eventCity'],
-        orgName: apiEvent['orgName'],
+        address: apiEvent['eventAddress'] as String,
+        city: apiEvent['eventCity'] as String,
+        orgName: apiEvent['orgName'] as String,
       );
     } catch (e) {
       if (kDebugMode) {
@@ -51,7 +54,7 @@ class ProtestEvent {
       : name = "name",
         type = "type",
         description = "description",
-        date = DateTime.now(),
+        date = DateTime.utc(0),
         location = const LatLng(0, 0),
         address = "address",
         city = "city",
@@ -100,7 +103,7 @@ class ProtestEvent {
         type: map['type'] as String,
         description: map['description'] as String,
         date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
-        location: LatLng.fromJson(map['location']),
+        location: LatLng.fromJson(map['location'] as List<int>),
         address: map['address'] as String,
         city: map['city'] as String,
         orgName: map['orgName'] as String,
@@ -122,30 +125,17 @@ class ProtestEvent {
   String toString() {
     return 'ProtestEvent(name: $name, type: $type, description: $description, date: $date, location: $location, address: $address, city: $city, orgName: $orgName)';
   }
+}
 
-  @override
-  bool operator ==(covariant ProtestEvent other) {
-    if (identical(this, other)) return true;
+DateTime _parseDateFromApi({
+  required String dateString,
+  required String timeString,
+}) {
+  final int year = int.parse(dateString.substring(4));
+  final int month = int.parse(dateString.substring(2, 4));
+  final int day = int.parse(dateString.substring(0, 2));
+  final int hour = int.parse(dateString.substring(0, 2));
+  final int minute = int.parse(dateString.substring(3));
 
-    return other.name == name &&
-        other.type == type &&
-        other.description == description &&
-        other.date == date &&
-        other.location == location &&
-        other.address == address &&
-        other.city == city &&
-        other.orgName == orgName;
-  }
-
-  @override
-  int get hashCode {
-    return name.hashCode ^
-        type.hashCode ^
-        description.hashCode ^
-        date.hashCode ^
-        location.hashCode ^
-        address.hashCode ^
-        city.hashCode ^
-        orgName.hashCode;
-  }
+  return DateTime(year, month, day, hour, minute);
 }
