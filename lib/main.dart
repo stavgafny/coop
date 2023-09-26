@@ -7,9 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await appConfig.init();
 
-  final protests = await ProtestEventsProvider.get();
-  for (var element in protests) {
-    print(element);
-  }
+  final protestEvents = await protestEventsProvider.getData();
+  print("${protestEvents.length} protest events loaded");
   runApp(const MainApp());
 }

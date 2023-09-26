@@ -10,6 +10,8 @@
 # CooP - Protest Map 🇮🇱
 
 <br />
+<br />
+
 <div align="center">
 <a href="https://github.com/stavgafny/coop">
 <picture>

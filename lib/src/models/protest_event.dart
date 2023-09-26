@@ -4,33 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProtestEvent {
-  static ProtestEvent parseFromApi(Map<String, dynamic> apiEvent) {
-    ProtestEvent protestEvent = ProtestEvent.pure();
-    try {
-      protestEvent = protestEvent.copyWith(
-        name: apiEvent['eventName'] as String,
-        type: apiEvent['eventType'] as String,
-        description: apiEvent['eventDescription'] as String,
-        date: _parseDateFromApi(
-          dateString: apiEvent['eventDateString'],
-          timeString: apiEvent['eventStartTime'],
-        ),
-        location: LatLng.fromJson([
-          double.parse(apiEvent['latitude'].toString()),
-          double.parse(apiEvent['longitude'].toString())
-        ]),
-        address: apiEvent['eventAddress'] as String,
-        city: apiEvent['eventCity'] as String,
-        orgName: apiEvent['orgName'] as String,
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        print("FAILED CONVERTING PROTEST EVENT FROM API $e");
-      }
-    }
-    return protestEvent;
-  }
-
   final String name;
   final String type;
   final String description;
@@ -39,7 +12,7 @@ class ProtestEvent {
   final String address;
   final String city;
   final String orgName;
-  ProtestEvent({
+  const ProtestEvent({
     required this.name,
     required this.type,
     required this.description,
@@ -101,10 +74,10 @@ class ProtestEvent {
       protestEvent = protestEvent.copyWith(
         name: map['name'] as String,
         type: map['type'] as String,
-        description: map['description'] as String,
+        description: map['description'] as String?,
         date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
-        location: LatLng.fromJson(map['location'] as List<int>),
-        address: map['address'] as String,
+        location: LatLng.fromJson(map['location'] as List<dynamic>),
+        address: map['address'] as String?,
         city: map['city'] as String,
         orgName: map['orgName'] as String,
       );
@@ -125,17 +98,4 @@ class ProtestEvent {
   String toString() {
     return 'ProtestEvent(name: $name, type: $type, description: $description, date: $date, location: $location, address: $address, city: $city, orgName: $orgName)';
   }
-}
-
-DateTime _parseDateFromApi({
-  required String dateString,
-  required String timeString,
-}) {
-  final int year = int.parse(dateString.substring(4));
-  final int month = int.parse(dateString.substring(2, 4));
-  final int day = int.parse(dateString.substring(0, 2));
-  final int hour = int.parse(dateString.substring(0, 2));
-  final int minute = int.parse(dateString.substring(3));
-
-  return DateTime(year, month, day, hour, minute);
 }

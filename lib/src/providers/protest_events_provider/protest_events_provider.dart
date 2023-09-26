@@ -1,30 +1,31 @@
+import 'dart:convert';
+
+import 'package:coop/src/services/cache_builder.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_config/flutter_config.dart';
-
 import '../../models/protest_event.dart';
 
-final _dio = Dio();
-final eventsUrl = FlutterConfig.get("PROTEST_EVENTS_URL");
+part 'protest_events_api_handler.dart';
 
-class ProtestEventsProvider {
-  static Future<List<dynamic>> _fetchProtestEvents() async {
-    final response = await _dio.get(eventsUrl);
-    return response.data;
-  }
+const protestEventsProvider = CacheBuilder<List<ProtestEvent>>(
+  cacheKey: "protest_events_provider",
+  cacheTTL: Duration(minutes: 30),
+  builder: _ProtestEventsApiHandler.get,
+  toJson: _encodeProtestEvents,
+  fromJson: _decodeProtestEvents,
+);
 
-  static List<ProtestEvent> _asProtestEvents(List<dynamic> protestEventsData) {
-    return protestEventsData
-        .map((protestEventData) => ProtestEvent.parseFromApi(protestEventData))
-        .toList();
-  }
+String _encodeProtestEvents(List<ProtestEvent> protestEvents) {
+  final mappedProtestEvents =
+      protestEvents.map((protestEvent) => protestEvent.toMap()).toList();
 
-  static Future<List<ProtestEvent>> get() async {
-    try {
-      final protestEventsData = await _fetchProtestEvents();
-      final protestEvents = _asProtestEvents(protestEventsData);
-      return protestEvents;
-    } catch (e) {
-      return [];
-    }
-  }
+  return json.encode(mappedProtestEvents);
+}
+
+List<ProtestEvent> _decodeProtestEvents(String jsonProtestEvents) {
+  final List<dynamic> mappedProtestEventsList = json.decode(jsonProtestEvents);
+  final List<ProtestEvent> protestEvents = mappedProtestEventsList
+      .map((protestEvent) => ProtestEvent.fromMap(protestEvent))
+      .toList();
+  return protestEvents;
 }
